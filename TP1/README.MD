@@ -12,7 +12,8 @@ J'accède à tout mes fichiers puis je les supprimes tous et le tour est joué
 2)
 
 
-(https://file%2B.vscode-resource.vscode-cdn.net/c%3A/Users/yanis/Pictures/Panic.gif?version%3D1669117729183)
+![Panic](https://user-images.githubusercontent.com/114937860/203307387-946079b6-120c-405a-8d50-2a1d19e50ae2.gif)
+
 
 
 
