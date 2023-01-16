@@ -7,7 +7,7 @@
 🌞 S'assurer que le service sshd est démarré
 
 ````
-[nathan@localhost ~]$ systemctl status sshd
+[yanis@localhost ~]$ systemctl status sshd
 ● sshd.service - OpenSSH server daemon
      Loaded: loaded (/usr/lib/systemd/system/sshd.service; enabled; vendor preset: enabled)
      Active: active (running) since Tue 2022-11-22 15:51:30 CET; 2min 59s ago
@@ -24,34 +24,34 @@
 🌞 Analyser les processus liés au service SSH
 
 ````
-[nathan@localhost ~]$ ps -ef | grep sshd
+[yanis@localhost ~]$ ps -ef | grep sshd
 root         721       1  0 15:51 ?        00:00:00 sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups
-root         883     721  0 15:52 ?        00:00:00 sshd: nathan [priv]
-nathan       889     883  0 15:52 ?        00:00:00 sshd: nathan@pts/0
-nathan       928     890  0 15:55 pts/0    00:00:00 grep --color=auto sshd
+root         883     721  0 15:52 ?        00:00:00 sshd: yanis [priv]
+yanis       889     883  0 15:52 ?        00:00:00 sshd: yanis@pts/0
+yanis       928     890  0 15:55 pts/0    00:00:00 grep --color=auto sshd
 ````
 
 🌞 Déterminer le port sur lequel écoute le service SSH
 
 ````
-[nathan@localhost ~]$ ss | grep ssh
+[yanis@localhost ~]$ ss | grep ssh
 tcp   ESTAB  0      0                    192.168.60.16:ssh       192.168.60.1:37426 
 ````
 
 🌞 Consulter les logs du service SSH
 
 ````
-[nathan@localhost ~]$ sudo tail /var/log/secure
-Nov 22 15:48:46 localhost sudo[32888]:  nathan : TTY=pts/0 ; PWD=/home/nathan ; USER=root ; COMMAND=/bin/nano /etc/selinux/config
-Nov 22 15:48:46 localhost sudo[32888]: pam_unix(sudo:session): session opened for user root(uid=0) by nathan(uid=1000)
+[yanis@localhost ~]$ sudo tail /var/log/secure
+Nov 22 15:48:46 localhost sudo[32888]:  yanis : TTY=pts/0 ; PWD=/home/yanis ; USER=root ; COMMAND=/bin/nano /etc/selinux/config
+Nov 22 15:48:46 localhost sudo[32888]: pam_unix(sudo:session): session opened for user root(uid=0) by yanis(uid=1000)
 Nov 22 15:48:52 localhost sudo[32888]: pam_unix(sudo:session): session closed for user root
 Nov 22 15:51:30 localhost sshd[721]: Server listening on 0.0.0.0 port 22.
 Nov 22 15:51:30 localhost sshd[721]: Server listening on :: port 22.
-Nov 22 15:51:56 localhost systemd[851]: pam_unix(systemd-user:session): session opened for user nathan(uid=1000) by (uid=0)
-Nov 22 15:51:56 localhost login[731]: pam_unix(login:session): session opened for user nathan(uid=1000) by (uid=0)
-Nov 22 15:51:57 localhost login[731]: LOGIN ON tty1 BY nathan
-Nov 22 15:52:27 localhost sshd[883]: Accepted password for nathan from 192.168.60.1 port 37426 ssh2
-Nov 22 15:52:27 localhost sshd[883]: pam_unix(sshd:session): session opened for user nathan(uid=1000) by (uid=0)
+Nov 22 15:51:56 localhost systemd[851]: pam_unix(systemd-user:session): session opened for user yanis(uid=1000) by (uid=0)
+Nov 22 15:51:56 localhost login[731]: pam_unix(login:session): session opened for user yanis(uid=1000) by (uid=0)
+Nov 22 15:51:57 localhost login[731]: LOGIN ON tty1 BY yanis
+Nov 22 15:52:27 localhost sshd[883]: Accepted password for yanis from 192.168.60.1 port 37426 ssh2
+Nov 22 15:52:27 localhost sshd[883]: pam_unix(sshd:session): session opened for user yanis(uid=1000) by (uid=0)
 ````
 
 # 2. Modification du service
@@ -59,7 +59,7 @@ Nov 22 15:52:27 localhost sshd[883]: pam_unix(sshd:session): session opened for 
 🌞 Identifier le fichier de configuration du serveur SSH
 
 ````
-[nathan@localhost ~]$ sudo find /etc/ssh/ -name "*config*"
+[yanis@localhost ~]$ sudo find /etc/ssh/ -name "*config*"
 /etc/ssh/ssh_config.d
 /etc/ssh/sshd_config.d
 /etc/ssh/sshd_config
@@ -69,23 +69,23 @@ Nov 22 15:52:27 localhost sshd[883]: pam_unix(sshd:session): session opened for 
 🌞 Modifier le fichier de conf
 
 ````
-[nathan@localhost ~]$ echo $RANDOM
+[yanis@localhost ~]$ echo $RANDOM
 29876
-[nathan@localhost ~]$ sudo nano /etc/ssh/sshd_config
-[nathan@localhost ~]$ sudo firewall-cmd --permanent --add-port=29876/tcp
+[yanis@localhost ~]$ sudo nano /etc/ssh/sshd_config
+[yanis@localhost ~]$ sudo firewall-cmd --permanent --add-port=29876/tcp
 success
-[nathan@localhost ~]$ sudo firewall-cmd --permanent --remove-port=22/tcp
+[yanis@localhost ~]$ sudo firewall-cmd --permanent --remove-port=22/tcp
 success
-[nathan@localhost ~]$ sudo firewall-cmd --reload
+[yanis@localhost ~]$ sudo firewall-cmd --reload
 success
-[nathan@localhost ~]$ sudo firewall-cmd --list-all | grep 29876
+[yanis@localhost ~]$ sudo firewall-cmd --list-all | grep 29876
 29876/tcp
 ````
 
 🌞 Redémarrer le service
 
 ````
-[nathan@localhost ~]$ sudo systemctl restart sshd
+[yanis@localhost ~]$ sudo systemctl restart sshd
 ````
 
 🌞 Effectuer une connexion SSH sur le nouveau port
@@ -101,8 +101,8 @@ ssh 192.168.60.16 -p 29876
 🌞 Installer le serveur NGINX
 
 ````
-[nathan@localhost ~]$ sudo dnf install nginx
-[sudo] password for nathan: 
+[yanis@localhost ~]$ sudo dnf install nginx
+[sudo] password for yanis: 
 Last metadata expiration check: 0:28:35 ago on Tue 22 Nov 2022 03:42:59 PM CET.
 Dependencies resolved.
 ============================================================================================================================================================================================================================================
@@ -152,15 +152,15 @@ Complete!
 
 
 ````
-[nathan@localhost ~]$ sudo systemctl start nginx
+[yanis@localhost ~]$ sudo systemctl start nginx
 ````
 
 🌞 Déterminer sur quel port tourne NGINX
 
 ````
-[nathan@localhost ~]$ sudo firewall-cmd --permanent --add-port=80/tcp
+[yanis@localhost ~]$ sudo firewall-cmd --permanent --add-port=80/tcp
 success
-[nathan@localhost ~]$ sudo netstat -tulpn | grep nginx
+[yanis@localhost ~]$ sudo netstat -tulpn | grep nginx
 tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      1177/nginx: master  
 tcp6       0      0 :::80                   :::*                    LISTEN      1177/nginx: master 
 ````
@@ -168,16 +168,16 @@ tcp6       0      0 :::80                   :::*                    LISTEN      
 🌞 Déterminer les processus liés à l'exécution de NGINX
 
 ````
-[nathan@localhost ~]$ sudo ps aux | grep nginx
+[yanis@localhost ~]$ sudo ps aux | grep nginx
 root        1177  0.0  0.0  10084   944 ?        Ss   16:14   0:00 nginx: master process /usr/sbin/nginx
 nginx       1178  0.0  0.4  13852  4824 ?        S    16:14   0:00 nginx: worker process
-nathan      1186  0.0  0.2   6412  2152 pts/0    S+   16:15   0:00 grep --color=auto nginx
+yanis      1186  0.0  0.2   6412  2152 pts/0    S+   16:15   0:00 grep --color=auto nginx
 ````
 
 🌞 Euh wait
 
 ````
-nathan@nathan-SSD-Linux:~/Documents/Github/tp-b1-linux$ curl http://192.168.60.16:80 | head -n 7
+yanis@yanis-SSD-Linux:~/Documents/Github/tp-b1-linux$ curl http://192.168.60.16:80 | head -n 7
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0<!doctype html>
@@ -196,7 +196,7 @@ curl: (23) Failed writing body
 🌞 Déterminer le path du fichier de configuration de NGINX
 
 ````
-[nathan@localhost ~]$ sudo nginx -t
+[yanis@localhost ~]$ sudo nginx -t
 nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
 nginx: configuration file /etc/nginx/nginx.conf test is successful
 ````
@@ -204,8 +204,8 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
 🌞 Trouver dans le fichier de conf
 
 ````
-[nathan@localhost /]$ sudo cat /etc/nginx/nginx.conf | grep server -A 10
-[sudo] password for nathan: 
+[yanis@localhost /]$ sudo cat /etc/nginx/nginx.conf | grep server -A 10
+[sudo] password for yanis: 
     server {
         listen       80;
         listen       [::]:80;
@@ -251,7 +251,7 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
 #        }
 #    }
 
-[nathan@localhost /]$ sudo cat /etc/nginx/nginx.conf | grep include
+[yanis@localhost /]$ sudo cat /etc/nginx/nginx.conf | grep include
     include /etc/nginx/mime.types;
     include /etc/nginx/conf.d/*.conf;
     include /etc/nginx/default.d/*.conf;
@@ -262,21 +262,21 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
 🌞 Créer un site web
 
 ````
-[nathan@localhost tp2_linux]$ cat index.html 
+[yanis@localhost tp2_linux]$ cat index.html 
 <h1>MEOW MEOW C MON SITE DE OUF</h1>
 ````
 
 🌞 Adapter la conf NGINX
 
 ````
-[nathan@localhost /]$ cat /etc/nginx/nginx.conf | grep -i '^# *Include'
+[yanis@localhost /]$ cat /etc/nginx/nginx.conf | grep -i '^# *Include'
 #        include /etc/nginx/default.d/*.conf;
 ````
 
 🌞 Visitez votre super site web
 
 ````
-[nathan@localhost /]$ curl http://192.168.60.16:80 | head -n 7
+[yanis@localhost /]$ curl http://192.168.60.16:80 | head -n 7
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100    37  100    37    0     0  22275      0 --:--:-- --:--:-- --:--:-- 37000
@@ -348,18 +348,18 @@ ExecStart=/usr/bin/nc -l 8657
 🌞 Indiquer au système qu'on a modifié les fichiers de service
 
 ````
-[nathan@localhost ~]$ sudo systemctl daemon-reload
+[yanis@localhost ~]$ sudo systemctl daemon-reload
 ````
 
 🌞 Démarrer notre service de ouf
 ````
-[nathan@localhost ~]$ sudo systemctl start tp2_nc.service
+[yanis@localhost ~]$ sudo systemctl start tp2_nc.service
 ````
 
 🌞 Vérifier que ça fonctionne
 
 ````
-[nathan@localhost ~]$ sudo systemctl status tp2_nc.service
+[yanis@localhost ~]$ sudo systemctl status tp2_nc.service
 ● tp2_nc.service - Super netcat tout fou
    Loaded: loaded (/etc/systemd/system/tp2_nc.service; disabled; vendor preset: disabled)
    Active: active (running) since Wed 2021-03-10 15:56:36 CET; 2s ago
@@ -370,30 +370,30 @@ ExecStart=/usr/bin/nc -l 8657
            └─1007 /usr/bin/nc -l 8657
 
 Mar 10 15:56:36 localhost.localdomain systemd[1]: Started Super netcat tout fou.
-[nathan@localhost ~]$ sudo ss -tulpn | grep 8657
+[yanis@localhost ~]$ sudo ss -tulpn | grep 8657
 LISTEN     0      128          *:8657                   *:*                   users:(("nc",pid=1007,fd=3))
 ````
 
 🌞 Les logs de votre service
 
 ````
-[nathan@localhost ~]$ sudo journalctl -xe -u tp2_nc
+[yanis@localhost ~]$ sudo journalctl -xe -u tp2_nc
 -- Logs begin at Wed 2021-03-10 15:56:36 CET, end at Wed 2021-03-10 15:57:00 CET. --
 Mar 10 15:57:36 localhost.localdomain systemd[1]: Started Super netcat tout fou.
 Mar 10 15:57:36 localhost.localdomain nc[1007]: Ncat: Version 7.70 ( https://nmap.org/ncat )
 Mar 10 15:57:36 localhost.localdomain nc[1007]: Ncat: Listening on :::8657
 Mar 10 15:57:36 localhost.localdomain nc[1007]: Ncat: Listening on
-[nathan@localhost ~]$ sudo journalctl -xe -u tp2_nc -f
+[yanis@localhost ~]$ sudo journalctl -xe -u tp2_nc -f
 -- Logs begin at Wed 2021-03-10 15:56:36 CET, end at Wed 2021-03-10 15:57:00 CET. --
 Mar 10 15:57:36 localhost.localdomain systemd[1]: Started Super netcat tout fou.
 Mar 10 15:57:36 localhost.localdomain nc[1007]: Ncat: Version 7.70 ( https://nmap.org/ncat )
 Mar 10 15:57:36 localhost.localdomain nc[1007]: Ncat: Listening on :::8657
 Mar 10 15:57:36 localhost.localdomain nc[1007]: Ncat: Listening on
-[nathan@localhost ~]$ sudo journalctl -xe -u tp2_nc | grep "Started Super netcat tout fou"
+[yanis@localhost ~]$ sudo journalctl -xe -u tp2_nc | grep "Started Super netcat tout fou"
 Mar 10 15:57:36 localhost.localdomain systemd[1]: Started Super netcat tout fou.
-[nathan@localhost ~]$ sudo journalctl -xe -u tp2_nc | grep "Ncat: Connection from"
+[yanis@localhost ~]$ sudo journalctl -xe -u tp2_nc | grep "Ncat: Connection from"
 Mar 10 15:57:36 localhost.localdomain nc[1007]: Ncat: Connection from 10.33.18.231 60800
-[nathan@localhost ~]$ sudo journalctl -xe -u tp2_nc | grep "Stopped Super netcat tout fou"
+[yanis@localhost ~]$ sudo journalctl -xe -u tp2_nc | grep "Stopped Super netcat tout fou"
 Mar 10 15:57:36 localhost.localdomain systemd[1]: Stopped Super netcat tout fou.
 ````
 
@@ -406,5 +406,5 @@ Description=Super netcat tout fou
 [Service]
 ExecStart=/usr/bin/nc -l 8657
 Restart=always
-[nathan@localhost ~]$ sudo systemctl daemon-reload
+[yanis@localhost ~]$ sudo systemctl daemon-reload
 ````
