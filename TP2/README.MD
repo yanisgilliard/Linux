@@ -2,17 +2,7 @@
 
 ### Sommaire
 
-I. Service SSH
-1. Analyse du service
-2. Modification du service
-II. Service HTTP
-1. Mise en place
-2. Analyser la conf de NGINX
-3. Déployer un nouveau site web
-III. Your own services
-1. Au cas où vous auriez oublié
-2. Analyse des services existants
-3. Création de service
+# I. Service SSH
 
 🌞 S'assurer que le service sshd est démarré
 
