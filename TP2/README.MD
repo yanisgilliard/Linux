@@ -1,22 +1,22 @@
-###TP2 : Appréhender l'environnement Linux
+### TP2 : Appréhender l'environnement Linux
 
-###Sommaire
+### Sommaire
 
-##TP2 : Appréhender l'environnement Linux
+## TP2 : Appréhender l'environnement Linux
 
-#I. Service SSH
+# I. Service SSH
 1. Analyse du service
 2. Modification du service
-#II. Service HTTP
+# II. Service HTTP
 1. Mise en place
 2. Analyser la conf de NGINX
 3. Déployer un nouveau site web
-#III. Your own services
+# III. Your own services
 1. Au cas où vous auriez oublié
 2. Analyse des services existants
 3. Création de service
 
-#🌞 S'assurer que le service sshd est démarré
+# 🌞 S'assurer que le service sshd est démarré
 
 [nathan@localhost ~]$ systemctl status sshd
 ● sshd.service - OpenSSH server daemon
@@ -31,7 +31,7 @@
      CGroup: /system.slice/sshd.service
              └─721 "sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups"
 
-#🌞 Analyser les processus liés au service SSH
+# 🌞 Analyser les processus liés au service SSH
 
 [nathan@localhost ~]$ ps -ef | grep sshd
 root         721       1  0 15:51 ?        00:00:00 sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups
@@ -39,12 +39,12 @@ root         883     721  0 15:52 ?        00:00:00 sshd: nathan [priv]
 nathan       889     883  0 15:52 ?        00:00:00 sshd: nathan@pts/0
 nathan       928     890  0 15:55 pts/0    00:00:00 grep --color=auto sshd
 
-#🌞 Déterminer le port sur lequel écoute le service SSH
+# 🌞 Déterminer le port sur lequel écoute le service SSH
 
 [nathan@localhost ~]$ ss | grep ssh
 tcp   ESTAB  0      0                    192.168.60.16:ssh       192.168.60.1:37426 
 
-#🌞 Consulter les logs du service SSH
+# 🌞 Consulter les logs du service SSH
 
 [nathan@localhost ~]$ sudo tail /var/log/secure
 Nov 22 15:48:46 localhost sudo[32888]:  nathan : TTY=pts/0 ; PWD=/home/nathan ; USER=root ; COMMAND=/bin/nano /etc/selinux/config
@@ -58,9 +58,9 @@ Nov 22 15:51:57 localhost login[731]: LOGIN ON tty1 BY nathan
 Nov 22 15:52:27 localhost sshd[883]: Accepted password for nathan from 192.168.60.1 port 37426 ssh2
 Nov 22 15:52:27 localhost sshd[883]: pam_unix(sshd:session): session opened for user nathan(uid=1000) by (uid=0)
 
-#2. Modification du service
+# 2. Modification du service
 
-#🌞 Identifier le fichier de configuration du serveur SSH
+# 🌞 Identifier le fichier de configuration du serveur SSH
 
 [nathan@localhost ~]$ sudo find /etc/ssh/ -name "*config*"
 /etc/ssh/ssh_config.d
@@ -68,7 +68,7 @@ Nov 22 15:52:27 localhost sshd[883]: pam_unix(sshd:session): session opened for 
 /etc/ssh/sshd_config
 /etc/ssh/ssh_config
 
-#🌞 Modifier le fichier de conf
+# 🌞 Modifier le fichier de conf
 
 [nathan@localhost ~]$ echo $RANDOM
 29876
@@ -82,19 +82,19 @@ success
 [nathan@localhost ~]$ sudo firewall-cmd --list-all | grep 29876
 29876/tcp
 
-#🌞 Redémarrer le service
+# 🌞 Redémarrer le service
 
 [nathan@localhost ~]$ sudo systemctl restart sshd
 
-#🌞 Effectuer une connexion SSH sur le nouveau port
+# 🌞 Effectuer une connexion SSH sur le nouveau port
 
 ssh 192.168.60.16 -p 29876
 
-##II. Service HTTP
+## II. Service HTTP
 
-#1. Mise en place
+# 1. Mise en place
 
-#🌞 Installer le serveur NGINX
+# 🌞 Installer le serveur NGINX
 
 [nathan@localhost ~]$ sudo dnf install nginx
 [sudo] password for nathan: 
@@ -142,11 +142,11 @@ Installed:
 
 Complete!
 
-#🌞 Démarrer le service NGINX
+# 🌞 Démarrer le service NGINX
 
 [nathan@localhost ~]$ sudo systemctl start nginx
 
-#🌞 Déterminer sur quel port tourne NGINX
+# 🌞 Déterminer sur quel port tourne NGINX
 
 [nathan@localhost ~]$ sudo firewall-cmd --permanent --add-port=80/tcp
 success
@@ -154,14 +154,14 @@ success
 tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      1177/nginx: master  
 tcp6       0      0 :::80                   :::*                    LISTEN      1177/nginx: master 
 
-#🌞 Déterminer les processus liés à l'exécution de NGINX
+# 🌞 Déterminer les processus liés à l'exécution de NGINX
 
 [nathan@localhost ~]$ sudo ps aux | grep nginx
 root        1177  0.0  0.0  10084   944 ?        Ss   16:14   0:00 nginx: master process /usr/sbin/nginx
 nginx       1178  0.0  0.4  13852  4824 ?        S    16:14   0:00 nginx: worker process
 nathan      1186  0.0  0.2   6412  2152 pts/0    S+   16:15   0:00 grep --color=auto nginx
 
-#🌞 Euh wait
+# 🌞 Euh wait
 
 nathan@nathan-SSD-Linux:~/Documents/Github/tp-b1-linux$ curl http://192.168.60.16:80 | head -n 7
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
@@ -176,15 +176,15 @@ nathan@nathan-SSD-Linux:~/Documents/Github/tp-b1-linux$ curl http://192.168.60.1
 100  7620  100  7620    0     0  3771k      0 --:--:-- --:--:-- --:--:-- 7441k
 curl: (23) Failed writing body
 
-#2. Analyser la conf de NGINX
+# 2. Analyser la conf de NGINX
 
-#🌞 Déterminer le path du fichier de configuration de NGINX
+# 🌞 Déterminer le path du fichier de configuration de NGINX
 
 [nathan@localhost ~]$ sudo nginx -t
 nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
 nginx: configuration file /etc/nginx/nginx.conf test is successful
 
-#🌞 Trouver dans le fichier de conf
+# 🌞 Trouver dans le fichier de conf
 
 [nathan@localhost /]$ sudo cat /etc/nginx/nginx.conf | grep server -A 10
 [sudo] password for nathan: 
@@ -238,19 +238,19 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
     include /etc/nginx/conf.d/*.conf;
     include /etc/nginx/default.d/*.conf;
 
-#3. Déployer un nouveau site web
+# 3. Déployer un nouveau site web
 
-#🌞 Créer un site web
+# 🌞 Créer un site web
 
 [nathan@localhost tp2_linux]$ cat index.html 
 <h1>MEOW MEOW C MON SITE DE OUF</h1>
 
-#🌞 Adapter la conf NGINX
+# 🌞 Adapter la conf NGINX
 
 [nathan@localhost /]$ cat /etc/nginx/nginx.conf | grep -i '^# *Include'
 #        include /etc/nginx/default.d/*.conf;
 
-#🌞 Visitez votre super site web
+# 🌞 Visitez votre super site web
 
 [nathan@localhost /]$ curl http://192.168.60.16:80 | head -n 7
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
@@ -258,11 +258,11 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
 100    37  100    37    0     0  22275      0 --:--:-- --:--:-- --:--:-- 37000
 <h1>MEOW MEOW C MON SITE DE OUF</h1>
 
-##III. Your own services
+## III. Your own services
 
-#2. Analyse des services existants
+# 2. Analyse des services existants
 
-#🌞 Afficher le fichier de service SSH
+# 🌞 Afficher le fichier de service SSH
 
 [Unit]
 Description=OpenBSD Secure Shell server
@@ -281,7 +281,7 @@ RestartSec=42s
 [Install]
 WantedBy=multi-user.target
 
-#🌞 Afficher le fichier de service NGINX
+# 🌞 Afficher le fichier de service NGINX
 
 [Unit]
 Description=The nginx HTTP and reverse proxy server
@@ -299,9 +299,9 @@ PrivateTmp=true
 [Install]
 WantedBy=multi-user.target
 
-#3. Création de service
+# 3. Création de service
 
-#🌞 Créez le fichier /etc/systemd/system/tp2_nc.service
+# 🌞 Créez le fichier /etc/systemd/system/tp2_nc.service
 
 [Unit]
 Description=Super netcat tout fou
@@ -314,15 +314,15 @@ Description=Super netcat tout fou
 [Service]
 ExecStart=/usr/bin/nc -l 8657
 
-#🌞 Indiquer au système qu'on a modifié les fichiers de service
+# 🌞 Indiquer au système qu'on a modifié les fichiers de service
 
 [nathan@localhost ~]$ sudo systemctl daemon-reload
 
-#🌞 Démarrer notre service de ouf
+# 🌞 Démarrer notre service de ouf
 
 [nathan@localhost ~]$ sudo systemctl start tp2_nc.service
 
-#🌞 Vérifier que ça fonctionne
+# 🌞 Vérifier que ça fonctionne
 
 [nathan@localhost ~]$ sudo systemctl status tp2_nc.service
 ● tp2_nc.service - Super netcat tout fou
@@ -338,7 +338,7 @@ Mar 10 15:56:36 localhost.localdomain systemd[1]: Started Super netcat tout fou.
 [nathan@localhost ~]$ sudo ss -tulpn | grep 8657
 LISTEN     0      128          *:8657                   *:*                   users:(("nc",pid=1007,fd=3))
 
-#🌞 Les logs de votre service
+# 🌞 Les logs de votre service
 
 [nathan@localhost ~]$ sudo journalctl -xe -u tp2_nc
 -- Logs begin at Wed 2021-03-10 15:56:36 CET, end at Wed 2021-03-10 15:57:00 CET. --
@@ -359,7 +359,7 @@ Mar 10 15:57:36 localhost.localdomain nc[1007]: Ncat: Connection from 10.33.18.2
 [nathan@localhost ~]$ sudo journalctl -xe -u tp2_nc | grep "Stopped Super netcat tout fou"
 Mar 10 15:57:36 localhost.localdomain systemd[1]: Stopped Super netcat tout fou.
 
-#🌞 Affiner la définition du service
+# 🌞 Affiner la définition du service
 
 [Unit]
 Description=Super netcat tout fou
