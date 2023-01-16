@@ -177,7 +177,7 @@ yanis      1186  0.0  0.2   6412  2152 pts/0    S+   16:15   0:00 grep --color=a
 🌞 Euh wait
 
 ````
-yanis@yanis-SSD-Linux:~/Documents/Github/tp-b1-linux$ curl http://192.168.60.16:80 | head -n 7
+yanis@yanis-Linux:~/Documents/Github/tp-b1-linux$ curl http://192.168.60.16:80 | head -n 7
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0<!doctype html>
