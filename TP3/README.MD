@@ -4,19 +4,7 @@
 
 TP 3 : We do a little scripting
 
-Sommaire
-
-0. Un premier script
 I. Script carte d'identité
-Rendu
-II. Script youtube-dl
-Rendu
-III. MAKE IT A SERVICE
-Rendu
-IV. Bonus
-
-I. Script carte d'identité
-Rendu
 
 Fichier : idcard.sh
 
