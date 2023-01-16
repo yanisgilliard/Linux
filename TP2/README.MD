@@ -273,7 +273,7 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
 #        include /etc/nginx/default.d/*.conf;
 ````
 
-🌞 Visitez votre super site web
+🌞 Visitez votre Site web
 
 ````
 [yanis@localhost /]$ curl http://192.168.60.16:80 | head -n 7
