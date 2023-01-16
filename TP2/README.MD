@@ -2,8 +2,6 @@
 
 ### Sommaire
 
-## TP2 : Appréhender l'environnement Linux
-
 # I. Service SSH
 1. Analyse du service
 2. Modification du service
@@ -16,7 +14,7 @@
 2. Analyse des services existants
 3. Création de service
 
-# 🌞 S'assurer que le service sshd est démarré
+🌞 S'assurer que le service sshd est démarré
 
 [nathan@localhost ~]$ systemctl status sshd
 ● sshd.service - OpenSSH server daemon
@@ -31,7 +29,7 @@
      CGroup: /system.slice/sshd.service
              └─721 "sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups"
 
-# 🌞 Analyser les processus liés au service SSH
+🌞 Analyser les processus liés au service SSH
 
 [nathan@localhost ~]$ ps -ef | grep sshd
 root         721       1  0 15:51 ?        00:00:00 sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups
